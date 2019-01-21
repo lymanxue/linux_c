@@ -31,49 +31,51 @@ static pthread_cond_t m_worker_cond;
 
 
 
-static void* _worker_command_loop(void *arg)
+static void *_worker_command_loop(void *arg)
 {
-    uint32_t i = 5;
+	uint32_t i = 5;
 
-    LOG_MSG_DEBUG("init \n");
+	LOG_MSG_DEBUG("init. \n");
 
-    while (i--) {
-        LOG_MSG_DEBUG("i=%d \n", i);
-    };
+	while (i--) {
+		LOG_MSG_DEBUG("i=%d \n", i);
+	};
 
-    pthread_cond_signal(&m_worker_cond);
+	pthread_cond_signal(&m_worker_cond);
 
-    return R_SUCCESS;
+	return R_SUCCESS;
 }
 
 int32_t worker_run(void)
 {
-    int32_t ret = -R_FAILED;
+	int32_t ret = -R_FAILED;
 
-    LOG_MSG_DEBUG("init. \n");
+	LOG_MSG_DEBUG("init. \n");
 
-    ret = pthread_create(&m_workerthread, NULL, _worker_command_loop, NULL);
-    if (ret != R_SUCCESS)
-        LOG_MSG_DEBUG("can't create thread (%d, %s)\n", ret, strerror(ret));
+	ret = pthread_create(&m_workerthread, NULL, _worker_command_loop, NULL);
+	if (ret != R_SUCCESS) {
+		LOG_MSG_DEBUG("can't create thread (%d, %s)\n",
+			ret, strerror(ret));
+	}
 
-    return ret;
+	return ret;
 }
 
 int32_t worker_init(void)
 {
-    LOG_MSG_DEBUG("init. \n");
+	LOG_MSG_DEBUG("init. \n");
 
-    pthread_mutex_init(&m_lock, NULL);
-    pthread_cond_init(&m_worker_cond, NULL);
-    worker_run();
+	pthread_mutex_init(&m_lock, NULL);
+	pthread_cond_init(&m_worker_cond, NULL);
+	worker_run();
 }
 
 int32_t main(void)
 {
-    worker_init();
-    pthread_mutex_lock(&m_lock);
-    pthread_cond_wait(&m_worker_cond, &m_lock);
-    pthread_mutex_unlock(&m_lock);
-    return R_SUCCESS;
+	worker_init();
+	pthread_mutex_lock(&m_lock);
+	pthread_cond_wait(&m_worker_cond, &m_lock);
+	pthread_mutex_unlock(&m_lock);
+	return R_SUCCESS;
 }
 
