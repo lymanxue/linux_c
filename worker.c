@@ -6,7 +6,7 @@
  * All rights reserved
  *
  * The present software is the confidential and proprietary information of
- * Silead Inc. You shall not disclose the present software and shall use it
+ * lyman. You shall not disclose the present software and shall use it
  * only in accordance with the terms of the license agreement you entered
  * into with lyman. This software may be subject to export or import
  * laws in certain countries.
