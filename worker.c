@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include <pthread.h>
+#include "dump_file.h"
 #include "worker.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,6 +42,7 @@ static void *_worker_command_loop(void *arg)
 		LOG_MSG_DEBUG("i=%d \n", i);
 	};
 
+	dump_file_save();
 	pthread_cond_signal(&m_worker_cond);
 
 	return R_SUCCESS;
@@ -70,7 +72,7 @@ int32_t worker_init(void)
 	worker_run();
 }
 
-int32_t main(void)
+int32_t main(int32_t argc, char *argv[])
 {
 	worker_init();
 	pthread_mutex_lock(&m_lock);
